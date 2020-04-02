@@ -3,8 +3,6 @@ package em.embedded.br.com.codenation;
 
 import br.com.codenation.hospital.GestaohospitalarApplication;
 import com.mongodb.MongoClient;
-import com.p6spy.engine.spy.P6SpyDriver;
-import org.evomaster.client.java.controller.AuthUtils;
 import org.evomaster.client.java.controller.EmbeddedSutController;
 import org.evomaster.client.java.controller.InstrumentedSutStarter;
 import org.evomaster.client.java.controller.problem.ProblemInfo;
@@ -16,8 +14,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.testcontainers.containers.GenericContainer;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
