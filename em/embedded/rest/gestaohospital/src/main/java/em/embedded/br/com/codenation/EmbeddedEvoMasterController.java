@@ -69,13 +69,6 @@ public class EmbeddedEvoMasterController extends EmbeddedSutController {
                 new String[]{"--server.port=0",
                         "--liquibase.enabled=false",
                         "--spring.data.mongodb.uri=mongodb://" + mongodb.getContainerIpAddress() + ":" + mongodb.getMappedPort(27017) + "/HospitalDB",
-                    //    "--spring.datasource.url=jdbc:p6spy:h2:mem:testdb;DB_CLOSE_DELAY=-1;",
-                    //    "--spring.datasource.driver-class-name=" + P6SpyDriver.class.getName(),
-                    //    "--spring.jpa.database-platform=org.hibernate.dialect.H2Dialect",
-                    //    "--spring.jpa.properties.hibernate.enable_lazy_load_no_trans=true",
-                   //     "--spring.datasource.username=sa",
-                    //    "--spring.datasource.password",
-                        "--dg-toolkit.derby.port=0",
                         "--spring.cache.type=NONE"
                 });
 
@@ -117,7 +110,7 @@ public class EmbeddedEvoMasterController extends EmbeddedSutController {
 
     @Override
     public List<AuthenticationDto> getInfoForAuthentication() {
-        return Arrays.asList(AuthUtils.getForDefaultSpringFormLogin("ADMIN", "admin", "admin"));
+        return null;
     }
 
     @Override
@@ -127,13 +120,13 @@ public class EmbeddedEvoMasterController extends EmbeddedSutController {
 
     @Override
     public String getDatabaseDriverName() {
-        return "org.h2.Driver";
+        return null;
     }
 
     @Override
     public ProblemInfo getProblemInfo() {
         return new RestProblem(
-                "http://localhost:" + getSutPort() + "/v2/api-docs?group=1ocDashboardsApi",
+                "http://localhost:" + getSutPort() + "/v2/api-docs",
                 null
         );
     }
