@@ -131,4 +131,9 @@ public class EmbeddedEvoMasterController extends EmbeddedSutController {
     public SutInfoDto.OutputFormat getPreferredOutputFormat() {
         return SutInfoDto.OutputFormat.JAVA_JUNIT_4;
     }
+
+    @Override
+    public MongoClient getMongoClient() {
+        return this.mongoClient;
+    }
 }
