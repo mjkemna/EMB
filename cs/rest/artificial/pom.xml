@@ -19,7 +19,7 @@
     </modules>
 
     <properties>
-        <version.kotlin>1.2.50</version.kotlin>
+        <kotlin.version>1.2.50</kotlin.version>
         <java.version>1.8</java.version>
         <swagger.version>1.5.21</swagger.version>
         <springboot.version>2.0.3.RELEASE</springboot.version>
@@ -31,12 +31,12 @@
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib-jdk8</artifactId>
-                <version>${version.kotlin}</version>
+                <version>${kotlin.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-reflect</artifactId>
-                <version>${version.kotlin}</version>
+                <version>${kotlin.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -116,7 +116,7 @@
                     <!-- see https://kotlinlang.org/docs/reference/using-maven.html -->
                     <artifactId>kotlin-maven-plugin</artifactId>
                     <groupId>org.jetbrains.kotlin</groupId>
-                    <version>${version.kotlin}</version>
+                    <version>${kotlin.version}</version>
                     <!--
                         Kotlin has a major "limitation" that all classes are final by default.
                         Someone call it a "feature", others (like me) call it a "design flaw".
@@ -137,12 +137,12 @@
                         <dependency>
                             <groupId>org.jetbrains.kotlin</groupId>
                             <artifactId>kotlin-maven-allopen</artifactId>
-                            <version>${version.kotlin}</version>
+                            <version>${kotlin.version}</version>
                         </dependency>
                         <dependency>
                             <groupId>org.jetbrains.kotlin</groupId>
                             <artifactId>kotlin-maven-noarg</artifactId>
-                            <version>${version.kotlin}</version>
+                            <version>${kotlin.version}</version>
                         </dependency>
                     </dependencies>
                     <executions>

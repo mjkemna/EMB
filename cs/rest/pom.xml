@@ -13,7 +13,6 @@
 
 
     <modules>
-        <module>original</module>
         <module>artificial</module>
     </modules>
 

@@ -21,7 +21,7 @@
         <dependency>
             <groupId>org.evomaster</groupId>
             <artifactId>evomaster-client-java-controller</artifactId>
-            <version>${evomaster-version}</version>
+            <version>${evomaster.version}</version>
             <exclusions>
             <!--
                 At the moment, we use an old version in EM, due to some
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.evomaster</groupId>
             <artifactId>evomaster-client-java-instrumentation</artifactId>
-            <version>${evomaster-version}</version>
+            <version>${evomaster.version}</version>
         </dependency>
         <dependency>
             <groupId>io.rest-assured</groupId>

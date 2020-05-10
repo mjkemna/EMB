@@ -13,15 +13,9 @@
 
 
     <modules>
-        <module>features-service</module>
-        <module>scout-api</module>
-        <module>proxyprint</module>
         <module>ncs</module>
         <module>scs</module>
-        <module>catwatch</module>
         <module>news</module>
-        <module>ind0</module>
-        <module>ocvn</module>
     </modules>
 
 </project>
