@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import io.swagger.annotations.ApiResponse
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -32,11 +31,8 @@ const val V2_NEWS_JSON = "application/vnd.tsdes.news+json;charset=UTF-8;version=
  */
 @Api(value = "/news", description = "Handling of creating and retrieving news")
 @RequestMapping(
-        path = arrayOf("/news"), // when the url is "<base>/news", then this class will be used to handle it
-        produces = arrayOf(
-                V2_NEWS_JSON, //custom Json with versioning
-                BASE_JSON //old format
-        )
+        path = ["/news"], // when the url is "<base>/news", then this class will be used to handle it
+        produces = [V2_NEWS_JSON, BASE_JSON]
 )
 @RestController
 @Validated // This is needed to do automated input validation
@@ -96,7 +92,7 @@ class NewsRestApi {
 
 
     @ApiOperation("Create a news")
-    @PostMapping(consumes = arrayOf(V2_NEWS_JSON, BASE_JSON))
+    @PostMapping(consumes = [V2_NEWS_JSON, BASE_JSON])
     @ApiResponse(code = 201, message = "The id of newly created news")
     fun createNews(
             @ApiParam("Text of news, plus author id and country. Should not specify id or creation time")
@@ -125,11 +121,6 @@ class NewsRestApi {
             return ResponseEntity.status(400).build()
         }
 
-        if (id == null) {
-            //this likely would happen only if bug
-            return ResponseEntity.status(500).build()
-        }
-
         return ResponseEntity.status(201).body(id)
     }
 
@@ -139,7 +130,7 @@ class NewsRestApi {
 
 
     @ApiOperation("Get a single news specified by id")
-    @GetMapping(path = arrayOf("/{id}"))
+    @GetMapping(path = ["/{id}"])
     fun getNews(@ApiParam(ID_PARAM)
                 @PathVariable("id")
                 pathId: String?)
@@ -163,7 +154,7 @@ class NewsRestApi {
 
 
     @ApiOperation("Update an existing news")
-    @PutMapping(path = arrayOf("/{id}"), consumes = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+    @PutMapping(path = ["/{id}"], consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun update(
             @ApiParam(ID_PARAM)
             @PathVariable("id")
@@ -211,7 +202,7 @@ class NewsRestApi {
 
 
     @ApiOperation("Update the text content of an existing news")
-    @PutMapping(path = arrayOf("/{id}/text"), consumes = arrayOf(MediaType.TEXT_PLAIN_VALUE))
+    @PutMapping(path = ["/{id}/text"], consumes = [MediaType.TEXT_PLAIN_VALUE])
     fun updateText(
             @ApiParam(ID_PARAM)
             @PathVariable("id")
@@ -239,8 +230,16 @@ class NewsRestApi {
     }
 
 
+    @ApiOperation("Delete all news")
+    @DeleteMapping(path = ["/reset/"])
+    fun deleteAll(): ResponseEntity<Any> {
+
+        crud.deleteAll()
+        return ResponseEntity.status(204).build()
+    }
+
     @ApiOperation("Delete a news with the given id")
-    @DeleteMapping(path = arrayOf("/{id}"))
+    @DeleteMapping(path = ["/{id}"])
     fun delete(@ApiParam(ID_PARAM)
                @PathVariable("id")
                pathId: String?): ResponseEntity<Any> {
@@ -260,8 +259,7 @@ class NewsRestApi {
         return ResponseEntity.status(204).build()
     }
 
-
-    @ExceptionHandler(value = ConstraintViolationException::class)
+    @ExceptionHandler(value = [ConstraintViolationException::class])
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     fun handleValidationFailure(ex: ConstraintViolationException): String {
 
@@ -279,11 +277,7 @@ class NewsRestApi {
      */
     private fun getNewsId(dto: NewsDto): String? {
 
-        if (dto.newsId != null) {
-            return dto.newsId
-        } else {
-            return dto.id
-        }
+        return if (dto.newsId != null) dto.newsId else dto.id
     }
 
 

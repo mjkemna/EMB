@@ -19,8 +19,8 @@ class CountryApi {
 
     @ApiOperation("Retrieve list of country names")
     @GetMapping(
-            path = arrayOf("/countries"),
-            produces = arrayOf(MediaType.APPLICATION_JSON_VALUE))
+            path = ["/countries"],
+            produces = [MediaType.APPLICATION_JSON_VALUE])
     fun get() : ResponseEntity<List<String>> {
 
         return ResponseEntity.ok(CountryList.countries)
