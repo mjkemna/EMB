@@ -39,7 +39,7 @@
                 <version>2.2.0</version>
                 <configuration>
                     <to>
-                        <image>registry.hub.docker.com/mjkemna/emb-cs-rest-artificial-news</image>
+                        <image>registry.hub.docker.com/mjkemna/emb-cs-rest-artificial-news:logged</image>
                     </to>
                 </configuration>
             </plugin>
