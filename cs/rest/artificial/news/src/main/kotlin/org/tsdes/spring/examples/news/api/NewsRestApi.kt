@@ -4,6 +4,8 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiParam
 import io.swagger.annotations.ApiResponse
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -38,6 +40,10 @@ const val V2_NEWS_JSON = "application/vnd.tsdes.news+json;charset=UTF-8;version=
 @Validated // This is needed to do automated input validation
 class NewsRestApi {
 
+
+    companion object {
+        private val log: Logger = LoggerFactory.getLogger(NewsRestApi::class.java)
+    }
 
     @Autowired
     private lateinit var crud: NewsRepository
@@ -82,8 +88,10 @@ class NewsRestApi {
         } else if (!country.isNullOrBlank() && !authorId.isNullOrBlank()) {
             crud.findAllByCountryAndAuthorId(country!!, authorId!!)
         } else if (!country.isNullOrBlank()) {
+            log.info("searching for country = $country")
             crud.findAllByCountry(country!!)
         } else {
+            log.info("searching for author = $authorId")
             crud.findAllByAuthorId(authorId!!)
         }
 
@@ -106,6 +114,7 @@ class NewsRestApi {
         }
 
         if (dto.creationTime != null) {
+            log.info("creationTime was not specified for the given news.")
             //Cannot specify creationTime for a newly generated news
             return ResponseEntity.status(400).build()
         }
@@ -118,6 +127,7 @@ class NewsRestApi {
         try {
             id = crud.createNews(dto.authorId!!, dto.text!!, dto.country!!)
         } catch (e: ConstraintViolationException) {
+            log.info("invalid news was offered, and was not stored.")
             return ResponseEntity.status(400).build()
         }
 
@@ -140,6 +150,7 @@ class NewsRestApi {
         try {
             id = pathId!!.toLong()
         } catch (e: Exception) {
+            log.info("unable to parse the given pathId to a Long: $pathId")
             /*
                 invalid id. But here we return 404 instead of 400,
                 as in the API we defined the id as string instead of long
@@ -147,6 +158,7 @@ class NewsRestApi {
             return ResponseEntity.status(404).build()
         }
 
+        log.info("searching for news with id $id")
         val dto = crud.findById(id).orElse(null) ?: return ResponseEntity.status(404).build()
 
         return ResponseEntity.ok(NewsConverter.transform(dto))
@@ -168,6 +180,7 @@ class NewsRestApi {
         try {
             dtoId = getNewsId(dto)!!.toLong()
         } catch (e: Exception) {
+            log.info("unable to parse the given pathId to a Long: $pathId")
             /*
                 invalid id. But here we return 404 instead of 400,
                 as in the API we defined the id as string instead of long
@@ -176,24 +189,28 @@ class NewsRestApi {
         }
 
         if (getNewsId(dto) != pathId) {
+            log.info("Not allowed to change the id of the resource $dtoId")
             // Not allowed to change the id of the resource (because set by the DB).
             // In this case, 409 (Conflict) sounds more appropriate than the generic 400
             return ResponseEntity.status(409).build()
         }
 
         if (!crud.existsById(dtoId)) {
+            log.info("Requested to update the news for unknown id $dtoId")
             //Here, in this API, made the decision to not allow to create a news with PUT.
             // So, if we cannot find it, should return 404 instead of creating it
             return ResponseEntity.status(404).build()
         }
 
         if (dto.text == null || dto.authorId == null || dto.country == null || dto.creationTime == null) {
+            log.info("Invalid update requested for news, all fields need to contain values")
             return ResponseEntity.status(400).build()
         }
 
         try {
             crud.update(dtoId, dto.text!!, dto.authorId!!, dto.country!!, dto.creationTime!!)
         } catch (e: ConstraintViolationException) {
+            log.info("Unable to update the given news for id $dtoId")
             return ResponseEntity.status(400).build()
         }
 
@@ -213,16 +230,19 @@ class NewsRestApi {
             text: String
     ): ResponseEntity<Any> {
         if (id == null) {
+            log.info("Cannot update the text content of an existing news with no id.")
             return ResponseEntity.status(400).build()
         }
 
         if (!crud.existsById(id)) {
+            log.info("Cannot update the text content if it does not exist.")
             return ResponseEntity.status(404).build()
         }
 
         try {
             crud.updateText(id, text)
         } catch (e: ConstraintViolationException) {
+            log.info("Unable to update the text content id $id")
             return ResponseEntity.status(400).build()
         }
 
@@ -248,10 +268,12 @@ class NewsRestApi {
         try {
             id = pathId!!.toLong()
         } catch (e: Exception) {
+            log.info("unable to parse the given pathId to a Long: $pathId")
             return ResponseEntity.status(400).build()
         }
 
         if (!crud.existsById(id)) {
+            log.info("unable to delete a news that does not exists with id: $pathId")
             return ResponseEntity.status(404).build()
         }
 
