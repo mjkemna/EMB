@@ -98,6 +98,12 @@
                 <version>4.12</version>
                 <scope>test</scope>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>6.1.5.Final</version>
+            </dependency>
 
             <!-- API, java.xml.bind module -->
             <dependency>
